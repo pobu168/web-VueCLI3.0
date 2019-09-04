@@ -10,7 +10,12 @@ const router = new Router({
         path: '/',
         name: 'index',
         component: () => import('@/components/index'),
-        title: '测试首页'
+        redirect: '/portal',
+        title: '测试首页',
+        children: [
+          { path: 'portal',  name: 'portal', title: '首页', meta: {},
+           component: () => import('@/components/pages/main-view') },
+        ]
       },
       {
         path: '/test',

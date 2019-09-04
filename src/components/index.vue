@@ -1,8 +1,9 @@
 <template>
   <div class="index">
     <Menu></Menu>
-    <router-view></router-view>
-    
+    <div class="content">
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -22,5 +23,16 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="less" scoped>
+  @import '../assets/css/common.less';
+  .index {
+    min-width: 1200px;
+    background: @gray-f;
+  }
+  .content {
+    width:1200px;
+    min-height: 600px;
+    margin: 0 auto;
+    background:white;
+  }
 </style>
