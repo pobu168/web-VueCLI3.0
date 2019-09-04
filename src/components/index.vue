@@ -33,6 +33,7 @@ export default {
     width:1200px;
     min-height: 600px;
     margin: 0 auto;
+    padding: 0 10px;
     background:white;
   }
 </style>

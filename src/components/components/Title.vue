@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="">
     <h3>{{title}}</h3>
   </div>
 </template>
@@ -18,4 +18,7 @@ export default {
 </script>
 
 <style scoped lang="less">
+  h3 {
+    padding: 10px 0;  
+  }
 </style>
