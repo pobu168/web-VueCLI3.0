@@ -3,21 +3,19 @@ import Router from 'vue-router'
 
 Vue.use(Router)
 
-import HelloWorld from './components/HelloWorld'
-import test from './components/test'
 
 const router = new Router({
     routes: [
       {
         path: '/',
-        name: 'HelloWorld',
-        component: HelloWorld,
+        name: 'index',
+        component: () => import('@/components/index'),
         title: '测试首页'
       },
       {
         path: '/test',
         name: 'test',
-        component: test,
+        component: () => import('@/components/test'),
         title: 'test'
       }
     ]  
