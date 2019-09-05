@@ -16,20 +16,43 @@ export default {
     return {
       charts: {
         chartsConfig: [
-          {
-            tabTape: {label: 'CPU/内存/负载', name: 'cpu_'},
-          },
-          {
-            tabTape: {label: '磁盘', name: 'disk'},
-          },
-          {
-            tabTape: {label: '网络', name: 'network'},
-          },
-          {
-            tabTape: {label: '其他', name: 'others'},
-          }    
+          // {
+          //   tabTape: {label: 'CPU/内存/负载', name: 'cpu_'},
+          //   btns:[{label: '按钮A', value:'btn1'},{label: '按钮B', value:'btn2'},{label: '按钮C', value:'btn3'}]
+          // },
+          // {
+          //   tabTape: {label: '磁盘', name: 'disk'},
+          //   btns:[]
+          // },
+          // {
+          //   tabTape: {label: '网络', name: 'network'},
+          //   btns:[]
+          // },
+          // {
+          //   tabTape: {label: '其他', name: 'others'},
+          //   btns:[]
+          // }    
         ]
       }
+    }
+  },
+  mounted() {
+    // this.$children[0].
+  },
+  methods: {
+    manageCharts (chartsConfig) {
+      this.charts.chartsConfig = []
+      chartsConfig.forEach(item => {
+        let chart = {
+          tabTape: {
+            label: item.title,
+            name: item.title + '_',
+          },
+          btns: item.tags.option,
+          charts: item.charts
+        }
+        this.charts.chartsConfig.push(chart)
+      })
     }
   },
   components: {

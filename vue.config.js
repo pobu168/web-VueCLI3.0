@@ -1,4 +1,6 @@
 const path = require('path')
+const webpack = require('webpack')
+
 module.exports = {
 	chainWebpack: config => {
 		const types = ['vue-modules', 'vue', 'normal-modules', 'normal']
@@ -10,7 +12,16 @@ module.exports = {
 				javascriptEnabled: true
 			}
 		}
-	}
+	},
+	configureWebpack: {
+		plugins: [
+		new webpack.ProvidePlugin({
+			$:"jquery",
+			jQuery:"jquery",
+			"windows.jQuery":"jquery"
+		})
+		]
+    }
 }
 function addStyleResource(rule) {
 	rule.use('style-resource')

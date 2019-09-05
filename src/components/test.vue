@@ -1,12 +1,33 @@
 <template>
   <div class="hello">
     <h1>TEST</h1>
+    <Button type="primary" @click="test">Primary</Button>
   </div>
 </template>
 
 <script>
 export default {
   name: 'TEST',
+  methods: {
+    test () {
+      // let params = {
+      //   endpoint: ['192.168.0.16'],
+      //   metric: ['cpu.used.percent'],
+      //   time: '-1800'
+      // }
+      // this.$httpRequestEntrance.httpRequestEntrance('POST','/api/v1/dashboard/chart', params, responseData => {
+      //   console.log(responseData) 
+      // })
+
+      // let params = {
+      //   search: 1
+      // }
+      // this.$httpRequestEntrance.httpRequestEntrance('GET','/api/v1/dashboard/search', params, responseData => {
+      //   console.log(responseData) 
+      // })
+
+    }
+  }
 }
 </script>
 

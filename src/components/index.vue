@@ -12,9 +12,6 @@ import Menu from './sub-c/menu'
 export default {
   name: 'index',
   methods: {
-    test () {
-      this.$router.push({path:'test'})
-    }
   },
   components:{
     Menu

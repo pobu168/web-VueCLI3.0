@@ -2,10 +2,10 @@
   <div class=" ">
    <ul>
       <li>
-        <Input v-model="value" placeholder="请输入主机名或IP地址，可模糊匹配" style="width: 300px" />
+        <Input v-model="ip" placeholder="请输入主机名或IP地址，可模糊匹配" style="width: 300px" />
       </li>
       <li>
-        <Button type="primary" icon="ios-search">搜索</Button>
+        <Button type="primary" @click="getChartsCOnfig" icon="ios-search">搜索</Button>
       </li>
       <li>
           <Select v-model="model1" style="width:80px">
@@ -25,7 +25,7 @@ export default {
   components: {},
   data() {
     return {
-      value: '',
+      ip: '', 
       model1: '',
       cityList: [
         {
@@ -49,6 +49,20 @@ export default {
             label: '4小时'
         }
       ]
+    }
+  },
+  mounted (){
+    this.getChartsCOnfig()
+  },
+  methods: {
+    getChartsCOnfig () {
+      let params = {
+        group: 1,
+        endpoint: '192.168.0.16'
+      }
+      this.$httpRequestEntrance.httpRequestEntrance('GET','v1/dashboard/panels', params, responseData => {
+        this.$parent.manageCharts(responseData)
+      })
     }
   }
 }
