@@ -20,11 +20,11 @@ export default {
     }
   },
   props: {
-    chartItemx: Object
+    chartItemx: Object,
+    params: Object,
   },
   created (){
     this.elId =  `id_${this.guid()}`;
-    console.log(this.chartItemx)
   },
   mounted() {
     this.getchartdata()
@@ -39,6 +39,35 @@ export default {
           text: config.title,
           left:'10%',
           top: '10px'
+        },
+        tooltip: {
+          trigger: 'axis',
+          backgroundColor: 'rgba(245, 245, 245, 0.8)',
+          borderWidth: 1,
+          borderColor: '#ccc',
+          padding: 10,
+          textStyle: {
+            color: '#000'
+          },
+          formatter: (params)=>{ 
+            var str =''
+            let date = new Date(params[0].data[0])
+            // let year =  date.getFullYear()
+            // let month = (date.getMonth() + 1)>=10?(date.getMonth() + 1):'0'+(date.getMonth() + 1)
+            // let day = date.getDate()>=10?date.getDate():'0'+date.getDate()
+            let hours = date.getHours()>=10?date.getHours():'0'+date.getHours()
+            let minutes = date.getMinutes()>=10?date.getMinutes():'0'+date.getMinutes()
+            let seconds = date.getSeconds()>=10?date.getSeconds():'0'+date.getSeconds()
+            str=hours+':'+minutes+':'+seconds
+            var res = `<div>${str}</div>`
+            params.forEach(item=>{
+              res = res+`<div><div style=' display: inline-block;width: 10px;
+              height: 10px;border: 1px solid transparent;border-radius:50%;
+               background-color:${item.color};'  ></div> ${item.seriesName} <br>  &nbsp; &nbsp;
+               ${Math.floor(item.data[1] * 1000) / 1000}</div>`
+            })
+            return res
+          },
         },
         calculable: false,
         color: ['#7EB26D', '#EAB839', '#6ED0E0', '#EF843C', '#E24D42', '#1F78C1', '#BA43A9', '#705DA0', '#508642', '#CCA300', '#447EBC', '#C15C17'],
@@ -108,12 +137,19 @@ export default {
     getchartdata () {
       let params = {
         id: this.chartItemx.id,
-        endpoint: [this.chartItemx.endpoint[0]],
+        endpoint: [this.params.endpoint],
         metric: [this.chartItemx.metric[0]],
-        time: '-1800'
+        time: this.params.time.toString(),
+        start: this.params.start + '',
+        end: this.params.end + ''
       }
       this.$httpRequestEntrance.httpRequestEntrance('POST','v1/dashboard/chart', params, responseData => {
         responseData.series[0].symbol = 'none'
+        responseData.series[0].smooth = true
+        responseData.series[0].lineStyle = {
+          width: 1
+        }
+
         let config = {
           title: responseData.title,
           series: responseData.series[0],

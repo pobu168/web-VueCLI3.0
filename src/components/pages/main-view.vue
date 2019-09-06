@@ -2,7 +2,7 @@
   <div class="page">
     <Title title="监控视图"></Title>
     <Search/>
-    <Charts :charts='charts'/>
+    <Charts :charts='charts' ref="child1" />
   </div>
 </template>
 
@@ -40,7 +40,7 @@ export default {
     // this.$children[0].
   },
   methods: {
-    manageCharts (chartsConfig) {
+    manageCharts (chartsConfig, params) {
       this.charts.chartsConfig = []
       chartsConfig.forEach(item => {
         let chart = {
@@ -49,10 +49,13 @@ export default {
             name: item.title + '_',
           },
           btns: item.tags.option,
-          charts: item.charts
+          tagsUrl: item.tags.url,
+          charts: item.charts,
+          params: params
         }
         this.charts.chartsConfig.push(chart)
       })
+      this.$refs.child1.refreshCharts(chartsConfig[0].title + '_')
     }
   },
   components: {

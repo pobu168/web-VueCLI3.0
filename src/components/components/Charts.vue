@@ -6,14 +6,14 @@
           <template v-if="btns.length">
             <div class="btn-content">
               <template v-for="(btnItem,btnIndex) in btns">
-                <div class="btn-block" :key='btnIndex'>
+                <div class="btn-block" :class="{btnActive: btnItem.isActive}" :key='btnIndex' @click="pitchOnBtn(btnItem,btnIndex)">
                   <span>{{btnItem.option_text}}</span>
                 </div>
               </template>
             </div>
           </template>
-          <template v-for="(chartItemx,chartIndex) in activeCharts">
-              <SingleChart :chartItemx="chartItemx" :key="chartIndex"> </SingleChart>
+          <template v-for="(chartItemx,chartIndexx) in activeCharts">
+              <SingleChart :chartItemx="chartItemx" :key="chartIndexx" :params="params"> </SingleChart>
           </template>
         </TabPane>
       </template>  
@@ -23,14 +23,15 @@
 
 <script>
 import SingleChart from '@/components/components/Single-chart'
-import { setTimeout } from 'timers';
 export default {
   name: '',
   data() {
     return {
       activeTab:  '',
       activeCharts: {},
-      btns: []
+      btns: [],
+      tagsUrl: '',
+      params: {}
     }
   },
   props: {
@@ -42,17 +43,39 @@ export default {
     }
   },
   methods: {
+    refreshCharts (activeTab=this.activeTab) {
+      this.changeTab(activeTab)
+    },
     changeTab (name) {
+      this.params = this.charts.chartsConfig[0].params
       this.activeTab = name
       this.activeCharts = []
       this.btns = []
-      this.charts.chartsConfig.forEach((item, index) => {
+      this.charts.chartsConfig.forEach((item) => {
         if (item.tabTape.name === name) {
           this.btns = item.btns
+          this.tagsUrl = item.tagsUrl
+          this.btns.forEach(element => {
+            element.isActive = false
+          });
           this.$nextTick(() => {
             this.activeCharts = item.charts
           })
         }
+      })
+    },
+    pitchOnBtn(btnItem,btnIndex) {
+      this.btns.forEach(element => {
+        element.isActive = false
+      })
+      this.params.tagParam = btnItem.option_value
+      this.btns[btnIndex].isActive = true
+
+      this.$httpRequestEntrance.httpRequestEntrance('GET','v1/' + this.tagsUrl +  btnItem.option_value, '', responseData => {
+        this.activeCharts.forEach((element,index) => {
+           element.metric = responseData[index].metric
+        })
+        this.refreshCharts()
       })
     }
   },
@@ -83,5 +106,8 @@ export default {
 
   .btn-content {
   padding: 2px;
+  }
+  .btnActive {
+    background: red;
   }
 </style>
