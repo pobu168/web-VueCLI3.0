@@ -15,29 +15,11 @@ export default {
   data() {
     return {
       charts: {
-        chartsConfig: [
-          // {
-          //   tabTape: {label: 'CPU/内存/负载', name: 'cpu_'},
-          //   btns:[{label: '按钮A', value:'btn1'},{label: '按钮B', value:'btn2'},{label: '按钮C', value:'btn3'}]
-          // },
-          // {
-          //   tabTape: {label: '磁盘', name: 'disk'},
-          //   btns:[]
-          // },
-          // {
-          //   tabTape: {label: '网络', name: 'network'},
-          //   btns:[]
-          // },
-          // {
-          //   tabTape: {label: '其他', name: 'others'},
-          //   btns:[]
-          // }    
-        ]
+        chartsConfig: []
       }
     }
   },
   mounted() {
-    // this.$children[0].
   },
   methods: {
     manageCharts (chartsConfig, params) {

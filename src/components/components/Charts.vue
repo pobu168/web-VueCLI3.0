@@ -57,7 +57,7 @@ export default {
           this.tagsUrl = item.tagsUrl
           this.btns.forEach(element => {
             element.isActive = false
-          });
+          });      
           this.$nextTick(() => {
             this.activeCharts = item.charts
           })
@@ -68,10 +68,11 @@ export default {
       this.btns.forEach(element => {
         element.isActive = false
       })
+      btnItem.isActive = true
       this.params.tagParam = btnItem.option_value
-      this.btns[btnIndex].isActive = true
+      this.$set(this.btns,btnIndex,btnItem)
 
-      this.$httpRequestEntrance.httpRequestEntrance('GET','v1/' + this.tagsUrl +  btnItem.option_value, '', responseData => {
+      this.$httpRequestEntrance.httpRequestEntrance('GET',this.tagsUrl +  btnItem.option_value, '', responseData => {
         this.activeCharts.forEach((element,index) => {
            element.metric = responseData[index].metric
         })
@@ -108,6 +109,6 @@ export default {
   padding: 2px;
   }
   .btnActive {
-    background: red;
+    background: @gray-f;
   }
 </style>

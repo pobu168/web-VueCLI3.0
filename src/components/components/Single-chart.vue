@@ -12,6 +12,7 @@ require('echarts/lib/chart/line');
 // 引入提示框和标题组件
 require('echarts/lib/component/tooltip');
 require('echarts/lib/component/title');
+require('echarts/lib/component/legend');
 export default {
   name: '',
   data() {
@@ -27,14 +28,15 @@ export default {
     this.elId =  `id_${this.guid()}`;
   },
   mounted() {
+    console.log(111111)
     this.getchartdata()
   },
   methods: {
     draw (config) {
       // 基于准备好的dom，初始化echarts实例
-    var myChart = echarts.init(document.getElementById(this.elId));
-    // 绘制图表
-    myChart.setOption({
+      var myChart = echarts.init(document.getElementById(this.elId));
+      // 绘制图表
+      myChart.setOption({
         title: {
           text: config.title,
           left:'10%',
@@ -68,6 +70,10 @@ export default {
             })
             return res
           },
+        },
+        legend: {
+          y: 'bottom', 
+          data: config.legend
         },
         calculable: false,
         color: ['#7EB26D', '#EAB839', '#6ED0E0', '#EF843C', '#E24D42', '#1F78C1', '#BA43A9', '#705DA0', '#508642', '#CCA300', '#447EBC', '#C15C17'],
@@ -135,7 +141,7 @@ export default {
       })
     },
     getchartdata () {
-      let params = {
+        let params = {
         id: this.chartItemx.id,
         endpoint: [this.params.endpoint],
         metric: [this.chartItemx.metric[0]],
@@ -143,16 +149,20 @@ export default {
         start: this.params.start + '',
         end: this.params.end + ''
       }
-      this.$httpRequestEntrance.httpRequestEntrance('POST','v1/dashboard/chart', params, responseData => {
+      this.$httpRequestEntrance.httpRequestEntrance('POST', this.chartItemx.url, params, responseData => {
         responseData.series[0].symbol = 'none'
         responseData.series[0].smooth = true
         responseData.series[0].lineStyle = {
           width: 1
         }
-
+        var legend = []
+        responseData.series.forEach((item)=>{
+          legend.push(item.name)
+        }) 
         let config = {
           title: responseData.title,
-          series: responseData.series[0],
+          legend: legend,
+          series: responseData.series,
           yaxis: responseData.yaxis,
         }
         this.draw(config)

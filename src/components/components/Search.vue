@@ -20,25 +20,12 @@
             </ul> 
           </div>
         </Poptip>
-
-        <!-- <Input v-model="ip" placeholder="请输入主机名或IP地址，可模糊匹配" style="width: 300px" /> -->
-        <!-- <input v-model.trim="ip"
-          @input="debounceQueryList"
-          placeholder="请输入主机名或IP地址，可模糊匹配"
-          type="text"
-          class="search-input" />
-          {{ip}} -->
-      </li>
-                <!--
-          @focus="showSearchTips = true"
-          @keyup.enter="enterClick"
-          @keyup.up="upClick"
-          @keyup.down="downClick" -->
-      <li class="search-li">
-        <Button type="primary" @click="getChartsCOnfig" icon="ios-search">搜索</Button>
       </li>
       <li class="search-li">
-          <Select v-model="model1" style="width:80px" @on-change="getChartsCOnfig">
+        <Button type="primary" @click="getChartsConfig" icon="ios-search">搜索</Button>
+      </li>
+      <li class="search-li">
+          <Select v-model="timeTnterval" style="width:80px" @on-change="getChartsConfig">
             <Option v-for="item in dataPick" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
       </li>
@@ -59,7 +46,7 @@ export default {
       ip_value: '',
       showSearchTips: false, // 控制搜索结果是否显示
       searchResult: [],
-      model1: -1800,
+      timeTnterval: -1800,
       dataPick: [
         {
             value: -1800,
@@ -76,7 +63,7 @@ export default {
       ],
       dateRange: ['',''],
       params: {
-        // time: this.model1,
+        // time: this.timeTnterval,
         // group: 1,
         // endpoint: '192.168.0.16',
         // start: Date.parse(this.dateRange[0]),
@@ -85,24 +72,23 @@ export default {
     }
   },
   mounted (){
-    this.getChartsCOnfig()
+    // this.getChartsConfig()
   },
   
   methods: {
     datePick (data) {
       this.dateRange = data
-      this.getChartsCOnfig()
+      this.getChartsConfig()
     },
-    getChartsCOnfig () {
+    getChartsConfig () {
       let params = {
         group: 1,
-        time: this.model1,
-        // endpoint: '192.168.0.16',
+        time: this.timeTnterval,
         endpoint: this.ip_value,
         start: this.dateRange[0] ===''? '':Date.parse(this.dateRange[0])/1000,
         end: this.dateRange[1] ===''? '':Date.parse(this.dateRange[1])/1000
       }
-      this.$httpRequestEntrance.httpRequestEntrance('GET','v1/dashboard/panels', params, responseData => {
+      this.$httpRequestEntrance.httpRequestEntrance('GET','/dashboard/panels', params, responseData => {
         this.$parent.manageCharts(responseData, params)
       },{isNeedloading: false})
     },
@@ -114,7 +100,7 @@ export default {
     choiceRes (resItem) {
       this.ip_name = resItem.option_text
       this.ip_value = resItem.option_value
-      this.getChartsCOnfig()
+      this.getChartsConfig()
       this.showSearchTips = false
     },
     request () {
@@ -124,7 +110,7 @@ export default {
       let params = {
         search: this.ip_name
       }
-      this.$httpRequestEntrance.httpRequestEntrance('GET','v1/dashboard/search', params, responseData => {
+      this.$httpRequestEntrance.httpRequestEntrance('GET','/dashboard/search', params, responseData => {
         this.searchResult = responseData
       })
       this.showSearchTips = true
