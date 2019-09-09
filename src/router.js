@@ -14,6 +14,8 @@ const router = new Router({
         title: '测试首页',
         children: [
           { path: 'portal',  name: 'portal', title: '首页', meta: {},
+           component: () => import('@/components/pages/portal') },
+          { path: 'mainView',  name: 'mainView', title: '监控视图', meta: {},
            component: () => import('@/components/pages/main-view') },
         ]
       },

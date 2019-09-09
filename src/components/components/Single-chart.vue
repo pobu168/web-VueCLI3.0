@@ -149,7 +149,7 @@ export default {
         start: this.params.start + '',
         end: this.params.end + ''
       }
-      this.$httpRequestEntrance.httpRequestEntrance('POST', this.chartItemx.url, params, responseData => {
+      this.$httpRequestEntrance.httpRequestEntrance('GET', this.chartItemx.url, params, responseData => {
         responseData.series[0].symbol = 'none'
         responseData.series[0].smooth = true
         responseData.series[0].lineStyle = {

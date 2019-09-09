@@ -1,7 +1,7 @@
 <template>
   <div class="page">
     <Title title="监控视图"></Title>
-    <Search/>
+    <Search ref="search" />
     <Charts :charts='charts' ref="child1" />
   </div>
 </template>
@@ -20,6 +20,9 @@ export default {
     }
   },
   mounted() {
+    if (this.$route.params.ip) {
+      this.$refs.search.getChartsConfig(this.$route.params.ip)
+    }
   },
   methods: {
     manageCharts (chartsConfig, params) {

@@ -2,24 +2,7 @@
   <div class=" ">
    <ul class="search-ul">
       <li class="search-li">
-        <Poptip placement="bottom" width="300">
-          <input v-model.trim="ip_name"
-          placeholder="请输入主机名或IP地址，可模糊匹配"
-          @input="userInput"
-          type="text"
-          class="search-input" />
-          
-          <div class="api" slot="content" v-if="showSearchTips">
-            <ul>
-              <template v-for="(resItem, resIndex) in searchResult">
-                <li style="line-height: 20px;font-weight: 500;cursor:pointer" @click="choiceRes(resItem)" :key="resIndex">
-                  <span>{{resItem.option_text}}</span>
-                </li>
-              </template>  
-                
-            </ul> 
-          </div>
-        </Poptip>
+        <Searchinput @sendInputValue="obtainInputValue"></Searchinput> 
       </li>
       <li class="search-li">
         <Button type="primary" @click="getChartsConfig" icon="ios-search">搜索</Button>
@@ -37,15 +20,12 @@
 </template>
 
 <script>
+import Searchinput from './Search-input'
 export default {
   name: '',
-  components: {},
   data() {
     return {
-      ip_name: '',
-      ip_value: '',
-      showSearchTips: false, // 控制搜索结果是否显示
-      searchResult: [],
+      ip: {},
       timeTnterval: -1800,
       dataPick: [
         {
@@ -80,28 +60,17 @@ export default {
       this.dateRange = data
       this.getChartsConfig()
     },
-    getChartsConfig () {
+    getChartsConfig (ip=this.ip) {
       let params = {
         group: 1,
         time: this.timeTnterval,
-        endpoint: this.ip_value,
+        endpoint: ip.value,
         start: this.dateRange[0] ===''? '':Date.parse(this.dateRange[0])/1000,
         end: this.dateRange[1] ===''? '':Date.parse(this.dateRange[1])/1000
       }
       this.$httpRequestEntrance.httpRequestEntrance('GET','/dashboard/panels', params, responseData => {
         this.$parent.manageCharts(responseData, params)
       },{isNeedloading: false})
-    },
-
-    userInput () {
-      this.showSearchTips = false
-      this.request()
-    },
-    choiceRes (resItem) {
-      this.ip_name = resItem.option_text
-      this.ip_value = resItem.option_value
-      this.getChartsConfig()
-      this.showSearchTips = false
     },
     request () {
       if (!this.ip_name) {
@@ -114,8 +83,14 @@ export default {
         this.searchResult = responseData
       })
       this.showSearchTips = true
+    },
+    obtainInputValue (ip) {
+      this.ip = ip
+      this.getChartsConfig()
     } 
-
+  },
+  components: {
+    Searchinput
   }
 }
 </script>
@@ -126,27 +101,5 @@ export default {
   }
   .search-ul>li:not(:first-child) {
     padding-left: 10px;
-  }
-
-  .search-input {
-    display: inline-block;
-    width: 300px;
-    height: 32px;
-    line-height: 1.5;
-    padding: 4px 7px;
-    font-size: 12px;
-    border: 1px solid #dcdee2;
-    border-radius: 4px;
-    color: #515a6e;
-    background-color: #fff;
-    background-image: none;
-    position: relative;
-    cursor: text
-
-  }
-  .search-input:focus {
-    outline: 0;
-    border-color: #57a3f3;
-    // box-shadow: 0 0 0 2px rgba(45,140,240,.2);
   }
 </style>
