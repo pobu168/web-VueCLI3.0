@@ -1,5 +1,5 @@
 <template>
-  <div class="xxxxx">
+  <div class="search-input-content">
         <Poptip placement="bottom" width="300">
           <input v-model.trim="ip.label"
           placeholder="请输入主机名或IP地址，可模糊匹配"
@@ -29,7 +29,7 @@ export default {
         label: '',
         value: '',
       },
-      showSearchTips: false, // 控制搜索结果是否显示
+      showSearchTips: false,
       searchResult: [],
     }
   },
@@ -81,11 +81,10 @@ export default {
   .search-input:focus {
     outline: 0;
     border-color: #57a3f3;
-    // box-shadow: 0 0 0 2px rgba(45,140,240,.2);
   }
 
-  .xxxxx {
+  .search-input-content {
     display: inline-block;
-    vertical-align: middle;
+    vertical-align: middle; 
   }
 </style>

@@ -52,7 +52,6 @@ export default {
     }
   },
   mounted (){
-    // this.getChartsConfig()
   },
   
   methods: {
